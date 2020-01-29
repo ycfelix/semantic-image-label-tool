@@ -34,6 +34,7 @@ namespace Image_labling_tool
             PictureBox box = (PictureBox)sender;
             pen.Color = box.BackColor;
             canvas.Cursor = Cursors.Cross;
+            Preprocess((Bitmap)canvas.Image, pen.Color);
         }
 
         private void PanelMouseDown(object sender, MouseEventArgs e)
@@ -50,15 +51,16 @@ namespace Image_labling_tool
                 {
                     return;
                 }
-                Image bmp = canvas.Image;
+                Image bmp = lastModified;
+                mouseMove = e.Location;
                 using (Graphics photo = Graphics.FromImage(bmp))
                 {
                     photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     Brush aBrush = new SolidBrush(pen.Color);
-                    photo.DrawLine(pen, mouseMove, e.Location);
+                    photo.DrawLine(pen, mouseDown, mouseMove);
                 }
-                mouseMove = e.Location;
-                canvas.Image = bmp;
+                canvas.Image = new Bitmap(bmp);
+
             }
         }
         private void PanelMouseClick(object sender, MouseEventArgs e)
@@ -67,7 +69,7 @@ namespace Image_labling_tool
             {
                 return;
             }
-            Image bmp = canvas.Image;
+            Image bmp = new Bitmap(canvas.Image);
             using (Graphics photo = Graphics.FromImage(bmp))
             {
                 photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -126,14 +128,13 @@ namespace Image_labling_tool
             {
                 return;
             }
-            Preprocess((Bitmap)bmp, pen.Color);
             using (Graphics photo = Graphics.FromImage(bmp))
             {
                 photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 Brush aBrush = new SolidBrush(pen.Color);
                 photo.FillPolygon(aBrush, points.ToArray());
             }
-            canvas.Image = bmp;
+            canvas.Image = new Bitmap(bmp);
             this.points.Clear();
         }
 
@@ -188,14 +189,23 @@ namespace Image_labling_tool
 
         private void dotMode_CheckedChanged(object sender, EventArgs e)
         {
-            if (dotMode.Checked) 
+            if (dotMode.Checked)
             {
                 lineMode.Checked = false;
             }
-            else if (lineMode.Checked)
+            else 
+            {
+                lineMode.Checked = true;
+            }
+            if (lineMode.Checked)
             {
                 dotMode.Checked = false;
             }
+            else
+            {
+                dotMode.Checked = true;
+            }
+
         }
 
         private void lineMode_CheckedChanged(object sender, EventArgs e)
@@ -204,9 +214,17 @@ namespace Image_labling_tool
             {
                 lineMode.Checked = false;
             }
-            else if (lineMode.Checked)
+            else
+            {
+                lineMode.Checked = true;
+            }
+            if (lineMode.Checked)
             {
                 dotMode.Checked = false;
+            }
+            else
+            {
+                dotMode.Checked = true;
             }
         }
     }
