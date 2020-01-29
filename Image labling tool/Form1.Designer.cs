@@ -1,4 +1,7 @@
-﻿namespace Image_labling_tool
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace Image_labling_tool
 {
     partial class Form1
     {
@@ -30,15 +33,15 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.canvas = new System.Windows.Forms.Panel();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.photoList = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -50,34 +53,36 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.canvas);
-            this.panel1.Controls.Add(this.listBox1);
+            this.panel1.Controls.Add(this.photoList);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(973, 562);
+            this.panel1.Size = new System.Drawing.Size(1151, 562);
             this.panel1.TabIndex = 0;
             // 
             // canvas
             // 
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.canvas.Location = new System.Drawing.Point(120, 40);
+            this.canvas.Location = new System.Drawing.Point(189, 45);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(853, 522);
+            this.canvas.Size = new System.Drawing.Size(962, 517);
             this.canvas.TabIndex = 3;
             this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PanelMouseDown);
             this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PanelMouseMove);
             this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PanelMouseUp);
             // 
-            // listBox1
+            // photoList
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(0, 40);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 522);
-            this.listBox1.TabIndex = 2;
+            this.photoList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.photoList.FormattingEnabled = true;
+            this.photoList.HorizontalScrollbar = true;
+            this.photoList.ItemHeight = 16;
+            this.photoList.Location = new System.Drawing.Point(0, 45);
+            this.photoList.Name = "photoList";
+            this.photoList.Size = new System.Drawing.Size(189, 517);
+            this.photoList.TabIndex = 2;
+            this.photoList.DoubleClick += new System.EventHandler(this.LoadPhoto);
             // 
             // panel2
             // 
@@ -92,8 +97,39 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(973, 40);
+            this.panel2.Size = new System.Drawing.Size(1151, 45);
             this.panel2.TabIndex = 0;
+            // 
+            // button3
+            // 
+            this.button3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button3.Location = new System.Drawing.Point(926, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 45);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Load Directory";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.LoadDirectory);
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button1.Location = new System.Drawing.Point(1001, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 45);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Undo";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.Location = new System.Drawing.Point(1076, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 45);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "Save to File";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // pictureBox4
             // 
@@ -135,41 +171,11 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.ColorClick);
             // 
-            // button2
-            // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button2.Location = new System.Drawing.Point(898, 0);
-            this.button2.Name = "saveButton";
-            this.button2.Size = new System.Drawing.Size(75, 40);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Save to File";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Location = new System.Drawing.Point(823, 0);
-            this.button1.Name = "undoButton";
-            this.button1.Size = new System.Drawing.Size(75, 40);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Undo";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button3.Location = new System.Drawing.Point(748, 0);
-            this.button3.Name = "loadButton";
-            this.button3.Size = new System.Drawing.Size(75, 40);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Load Directory";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(973, 562);
+            this.ClientSize = new System.Drawing.Size(1151, 562);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -192,7 +198,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel canvas;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox photoList;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
