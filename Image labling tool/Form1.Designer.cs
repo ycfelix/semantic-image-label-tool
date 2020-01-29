@@ -32,9 +32,8 @@ namespace Image_labling_tool
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.canvas = new System.Windows.Forms.Panel();
             this.photoList = new System.Windows.Forms.ListBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.actionBar = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -42,35 +41,28 @@ namespace Image_labling_tool
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.canvas = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.actionBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.canvas);
             this.panel1.Controls.Add(this.photoList);
-            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.actionBar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1151, 562);
+            this.panel1.Size = new System.Drawing.Size(484, 273);
             this.panel1.TabIndex = 0;
-            // 
-            // canvas
-            // 
-            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.canvas.Location = new System.Drawing.Point(189, 45);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(962, 517);
-            this.canvas.TabIndex = 3;
-            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PanelMouseDown);
-            this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PanelMouseMove);
-            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PanelMouseUp);
             // 
             // photoList
             // 
@@ -80,30 +72,30 @@ namespace Image_labling_tool
             this.photoList.ItemHeight = 16;
             this.photoList.Location = new System.Drawing.Point(0, 45);
             this.photoList.Name = "photoList";
-            this.photoList.Size = new System.Drawing.Size(189, 517);
+            this.photoList.Size = new System.Drawing.Size(189, 228);
             this.photoList.TabIndex = 2;
             this.photoList.DoubleClick += new System.EventHandler(this.LoadPhoto);
             // 
-            // panel2
+            // actionBar
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Controls.Add(this.pictureBox4);
-            this.panel2.Controls.Add(this.pictureBox3);
-            this.panel2.Controls.Add(this.pictureBox2);
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1151, 45);
-            this.panel2.TabIndex = 0;
+            this.actionBar.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.actionBar.Controls.Add(this.button3);
+            this.actionBar.Controls.Add(this.button1);
+            this.actionBar.Controls.Add(this.button2);
+            this.actionBar.Controls.Add(this.pictureBox4);
+            this.actionBar.Controls.Add(this.pictureBox3);
+            this.actionBar.Controls.Add(this.pictureBox2);
+            this.actionBar.Controls.Add(this.pictureBox1);
+            this.actionBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.actionBar.Location = new System.Drawing.Point(0, 0);
+            this.actionBar.Name = "actionBar";
+            this.actionBar.Size = new System.Drawing.Size(484, 45);
+            this.actionBar.TabIndex = 0;
             // 
             // button3
             // 
             this.button3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button3.Location = new System.Drawing.Point(926, 0);
+            this.button3.Location = new System.Drawing.Point(259, 0);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 45);
             this.button3.TabIndex = 6;
@@ -114,7 +106,7 @@ namespace Image_labling_tool
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Location = new System.Drawing.Point(1001, 0);
+            this.button1.Location = new System.Drawing.Point(334, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 45);
             this.button1.TabIndex = 5;
@@ -124,7 +116,7 @@ namespace Image_labling_tool
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button2.Location = new System.Drawing.Point(1076, 0);
+            this.button2.Location = new System.Drawing.Point(409, 0);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 45);
             this.button2.TabIndex = 4;
@@ -171,37 +163,56 @@ namespace Image_labling_tool
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.ColorClick);
             // 
+            // canvas
+            // 
+            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.canvas.Location = new System.Drawing.Point(189, 45);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(295, 228);
+            this.canvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.canvas.TabIndex = 3;
+            this.canvas.TabStop = false;
+            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PanelMouseDown);
+            this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PanelMouseMove);
+            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PanelMouseUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 562);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(484, 273);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.actionBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel actionBar;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel canvas;
         private System.Windows.Forms.ListBox photoList;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private PictureBox canvas;
     }
 }
 

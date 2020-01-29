@@ -18,6 +18,7 @@ namespace Image_labling_tool
         int y = -1;
         bool moving = false;
         Pen pen;
+        List<Point> points = new List<Point>();
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +26,7 @@ namespace Image_labling_tool
             pen = new Pen(Color.Black, 5);
             photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             pen.StartCap = pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-
+           
         }
 
         private void ColorClick(object sender, EventArgs e)
@@ -86,16 +87,12 @@ namespace Image_labling_tool
 
         private void LoadPhoto(object sender, EventArgs e)
         {
-            MessageBox.Show(photoList.SelectedItem.ToString());
-            Image img = Image.FromFile(photoList.SelectedItem.ToString());
-            this.MaximumSize = new Size(img.Width, img.Height);
-            this.Size = new Size(img.Width, img.Height);
-            panel1.MaximumSize = new Size(img.Width, img.Height);
-            panel1.Size = new Size(img.Width, img.Height);
-            canvas.MaximumSize = new Size(img.Width, img.Height);
-            canvas.Size = new Size(img.Width, img.Height);
-            photo = canvas.CreateGraphics();
-            this.photo.DrawImage(img, 0, 0);
+            int up = actionBar.Height;
+            int left = photoList.Size.Width;
+            Bitmap bmp = new Bitmap(photoList.SelectedItem.ToString());
+            photo.DrawImage(bmp, new Point(0, 0));
+            canvas.Image = bmp;
+            MessageBox.Show(canvas.Size.ToString());
         }
     }
 }
