@@ -35,6 +35,8 @@ namespace Image_labling_tool
             this.canvas = new System.Windows.Forms.PictureBox();
             this.photoList = new System.Windows.Forms.ListBox();
             this.actionBar = new System.Windows.Forms.Panel();
+            this.dotMode = new System.Windows.Forms.CheckBox();
+            this.lineMode = new System.Windows.Forms.CheckBox();
             this.fillButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.undoButton = new System.Windows.Forms.Button();
@@ -43,8 +45,6 @@ namespace Image_labling_tool
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lineMode = new System.Windows.Forms.CheckBox();
-            this.dotMode = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.actionBar.SuspendLayout();
@@ -112,6 +112,32 @@ namespace Image_labling_tool
             this.actionBar.Size = new System.Drawing.Size(697, 45);
             this.actionBar.TabIndex = 0;
             // 
+            // dotMode
+            // 
+            this.dotMode.AutoSize = true;
+            this.dotMode.Checked = true;
+            this.dotMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dotMode.Dock = System.Windows.Forms.DockStyle.Right;
+            this.dotMode.Location = new System.Drawing.Point(211, 0);
+            this.dotMode.Name = "dotMode";
+            this.dotMode.Size = new System.Drawing.Size(89, 45);
+            this.dotMode.TabIndex = 9;
+            this.dotMode.Text = "dot mode";
+            this.dotMode.UseVisualStyleBackColor = true;
+            this.dotMode.CheckedChanged += new System.EventHandler(this.dotMode_CheckedChanged);
+            // 
+            // lineMode
+            // 
+            this.lineMode.AutoSize = true;
+            this.lineMode.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lineMode.Location = new System.Drawing.Point(300, 0);
+            this.lineMode.Name = "lineMode";
+            this.lineMode.Size = new System.Drawing.Size(97, 45);
+            this.lineMode.TabIndex = 8;
+            this.lineMode.Text = "Line mode";
+            this.lineMode.UseVisualStyleBackColor = true;
+            this.lineMode.CheckedChanged += new System.EventHandler(this.lineMode_CheckedChanged);
+            // 
             // fillButton
             // 
             this.fillButton.Dock = System.Windows.Forms.DockStyle.Right;
@@ -130,7 +156,7 @@ namespace Image_labling_tool
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 45);
             this.button3.TabIndex = 6;
-            this.button3.Text = "Load Directory";
+            this.button3.Text = "Load Dir";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.LoadDirectory);
             // 
@@ -195,32 +221,6 @@ namespace Image_labling_tool
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.ColorClick);
-            // 
-            // lineMode
-            // 
-            this.lineMode.AutoSize = true;
-            this.lineMode.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lineMode.Location = new System.Drawing.Point(300, 0);
-            this.lineMode.Name = "lineMode";
-            this.lineMode.Size = new System.Drawing.Size(97, 45);
-            this.lineMode.TabIndex = 8;
-            this.lineMode.Text = "Line mode";
-            this.lineMode.UseVisualStyleBackColor = true;
-            this.lineMode.CheckedChanged += new System.EventHandler(this.lineMode_CheckedChanged);
-            // 
-            // dotMode
-            // 
-            this.dotMode.AutoSize = true;
-            this.dotMode.Checked = true;
-            this.dotMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dotMode.Dock = System.Windows.Forms.DockStyle.Right;
-            this.dotMode.Location = new System.Drawing.Point(211, 0);
-            this.dotMode.Name = "dotMode";
-            this.dotMode.Size = new System.Drawing.Size(89, 45);
-            this.dotMode.TabIndex = 9;
-            this.dotMode.Text = "dot mode";
-            this.dotMode.UseVisualStyleBackColor = true;
-            this.dotMode.CheckedChanged += new System.EventHandler(this.dotMode_CheckedChanged);
             // 
             // Form1
             // 

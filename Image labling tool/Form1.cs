@@ -21,6 +21,7 @@ namespace Image_labling_tool
         Image original;
         Image lastModified;
         List<Point> points = new List<Point>();
+        readonly Color[] COLOR = { Color.Red, Color.Blue, Color.Green, Color.Yellow };
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +35,6 @@ namespace Image_labling_tool
             PictureBox box = (PictureBox)sender;
             pen.Color = box.BackColor;
             canvas.Cursor = Cursors.Cross;
-            Preprocess((Bitmap)canvas.Image, pen.Color);
         }
 
         private void PanelMouseDown(object sender, MouseEventArgs e)
@@ -65,7 +65,7 @@ namespace Image_labling_tool
         }
         private void PanelMouseClick(object sender, MouseEventArgs e)
         {
-            if (!dotMode.Checked)
+            if (!dotMode.Checked|| canvas.Image==null)
             {
                 return;
             }
@@ -113,6 +113,7 @@ namespace Image_labling_tool
 
         private void LoadPhoto(object sender, EventArgs e)
         {
+            this.points.Clear();
             Bitmap bmp = new Bitmap(photoList.SelectedItem.ToString());
             this.original= new Bitmap(photoList.SelectedItem.ToString());
             Graphics photo = canvas.CreateGraphics();
@@ -145,7 +146,7 @@ namespace Image_labling_tool
 
         private void saveToFile_Click(object sender, EventArgs e)
         {
-            Postprocess((Bitmap)canvas.Image, pen.Color);
+            Postprocess((Bitmap)canvas.Image);
             string outputpath = photoList.SelectedItem.ToString();
             string ext = Path.GetExtension(outputpath);
             canvas.Image.Save(outputpath.Replace( ext, "_label_"+ ext));
@@ -155,36 +156,50 @@ namespace Image_labling_tool
             canvas.Image = null;
             original = null;
             lastModified = null;
+            this.points.Clear();
         }
 
-        private void Preprocess(Bitmap img, Color selected) 
+        private void Preprocess(Bitmap img) 
         {
             for (int i = 0; i < img.Width; i++) 
             {
                 for (int j = 0; j < img.Height; j++) 
                 {
                     Color c=img.GetPixel(i, j);
-                    if (c.R == selected.R && c.G == selected.G && c.B == selected.B) 
-                    {
-                        img.SetPixel(i, j, Color.White);
-                    }
-                }
-            }
-        }
-        private void Postprocess(Bitmap img, Color selected)
-        {
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    Color c = img.GetPixel(i, j);
-                    
-                    if (!(c.R==selected.R&&c.G==selected.G&&c.B==selected.B))
+                    if (CheckColor(c)) 
                     {
                         img.SetPixel(i, j, Color.Black);
                     }
                 }
             }
+        }
+        private void Postprocess(Bitmap img)
+        {
+
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    Color c = img.GetPixel(i, j);
+                   
+                    if (!CheckColor(c))
+                    {
+                        img.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+        }
+        private bool CheckColor(Color c) 
+        {
+            foreach (var e in COLOR) 
+            {
+                if (c.R == e.R && c.G == e.G && c.B == e.B) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        
         }
 
         private void dotMode_CheckedChanged(object sender, EventArgs e)
@@ -227,5 +242,6 @@ namespace Image_labling_tool
                 dotMode.Checked = true;
             }
         }
+
     }
 }
