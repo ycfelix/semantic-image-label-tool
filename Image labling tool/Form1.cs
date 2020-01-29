@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -13,20 +14,19 @@ namespace Image_labling_tool
 {
     public partial class Form1 : Form
     {
-        Graphics photo;
-        int x = -1;
-        int y = -1;
+        Point mouseMove = Point.Empty;
+        Point mouseDown = Point.Empty;
         bool moving = false;
         Pen pen;
+        Image original;
+        Image lastModified;
         List<Point> points = new List<Point>();
         public Form1()
         {
             InitializeComponent();
-            photo = canvas.CreateGraphics();
             pen = new Pen(Color.Black, 5);
-            photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             pen.StartCap = pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-           
+            pen.Color = Color.Red;
         }
 
         private void ColorClick(object sender, EventArgs e)
@@ -39,26 +39,50 @@ namespace Image_labling_tool
         private void PanelMouseDown(object sender, MouseEventArgs e)
         {
             moving = true;
-            x = e.X;
-            y = e.Y;
+            mouseDown = e.Location;
         }
 
         private void PanelMouseMove(object sender, MouseEventArgs e)
         {
-            if (moving && x != -1 && y != -1) 
+            if (moving) 
             {
-                photo.DrawLine(pen, x, y, e.X, e.Y);
-                x = e.X;
-                y = e.Y;
+                if (!lineMode.Checked) 
+                {
+                    return;
+                }
+                Image bmp = canvas.Image;
+                using (Graphics photo = Graphics.FromImage(bmp))
+                {
+                    photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    Brush aBrush = new SolidBrush(pen.Color);
+                    photo.DrawLine(pen, mouseMove, e.Location);
+                }
+                mouseMove = e.Location;
+                canvas.Image = bmp;
             }
+        }
+        private void PanelMouseClick(object sender, MouseEventArgs e)
+        {
+            if (!dotMode.Checked)
+            {
+                return;
+            }
+            Image bmp = canvas.Image;
+            using (Graphics photo = Graphics.FromImage(bmp))
+            {
+                photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                Brush aBrush = new SolidBrush(pen.Color);
+                photo.FillRectangle(aBrush, e.X, e.Y, 3, 3);
+                points.Add(e.Location);
+            }
+            canvas.Image = bmp;
         }
 
         private void PanelMouseUp(object sender, MouseEventArgs e)
         {
             moving = false;
-            x = -1;
-            y = -1;
             canvas.Cursor = Cursors.Default;
+            canvas.Invalidate();
         }
 
         private void LoadDirectory(object sender, EventArgs e)
@@ -87,12 +111,103 @@ namespace Image_labling_tool
 
         private void LoadPhoto(object sender, EventArgs e)
         {
-            int up = actionBar.Height;
-            int left = photoList.Size.Width;
             Bitmap bmp = new Bitmap(photoList.SelectedItem.ToString());
+            this.original= new Bitmap(photoList.SelectedItem.ToString());
+            Graphics photo = canvas.CreateGraphics();
             photo.DrawImage(bmp, new Point(0, 0));
             canvas.Image = bmp;
-            MessageBox.Show(canvas.Size.ToString());
+            this.lastModified = bmp;
+        }
+
+        private void fillButton_Click(object sender, EventArgs e)
+        {
+            Image bmp = lastModified;
+            if (bmp == null) 
+            {
+                return;
+            }
+            Preprocess((Bitmap)bmp, pen.Color);
+            using (Graphics photo = Graphics.FromImage(bmp))
+            {
+                photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                Brush aBrush = new SolidBrush(pen.Color);
+                photo.FillPolygon(aBrush, points.ToArray());
+            }
+            canvas.Image = bmp;
+            this.points.Clear();
+        }
+
+        private void undoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("I am too lazy not available yet.");
+        }
+
+        private void saveToFile_Click(object sender, EventArgs e)
+        {
+            Postprocess((Bitmap)canvas.Image, pen.Color);
+            string outputpath = photoList.SelectedItem.ToString();
+            string ext = Path.GetExtension(outputpath);
+            canvas.Image.Save(outputpath.Replace( ext, "_label_"+ ext));
+            original.Dispose();
+            lastModified.Dispose();
+            canvas.Image.Dispose();
+            canvas.Image = null;
+            original = null;
+            lastModified = null;
+        }
+
+        private void Preprocess(Bitmap img, Color selected) 
+        {
+            for (int i = 0; i < img.Width; i++) 
+            {
+                for (int j = 0; j < img.Height; j++) 
+                {
+                    Color c=img.GetPixel(i, j);
+                    if (c.R == selected.R && c.G == selected.G && c.B == selected.B) 
+                    {
+                        img.SetPixel(i, j, Color.White);
+                    }
+                }
+            }
+        }
+        private void Postprocess(Bitmap img, Color selected)
+        {
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    Color c = img.GetPixel(i, j);
+                    
+                    if (!(c.R==selected.R&&c.G==selected.G&&c.B==selected.B))
+                    {
+                        img.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+        }
+
+        private void dotMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (dotMode.Checked) 
+            {
+                lineMode.Checked = false;
+            }
+            else if (lineMode.Checked)
+            {
+                dotMode.Checked = false;
+            }
+        }
+
+        private void lineMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (dotMode.Checked)
+            {
+                lineMode.Checked = false;
+            }
+            else if (lineMode.Checked)
+            {
+                dotMode.Checked = false;
+            }
         }
     }
 }
