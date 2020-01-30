@@ -115,6 +115,13 @@ namespace Image_labling_tool
         {
             this.points.Clear();
             Bitmap bmp = new Bitmap(photoList.SelectedItem.ToString());
+            ProcessImage(bmp,(img,color,i,j)=> 
+            {
+                if (CheckColor(color))
+                {
+                    img.SetPixel(i, j, Color.Black);
+                }
+            });
             this.original= new Bitmap(photoList.SelectedItem.ToString());
             Graphics photo = canvas.CreateGraphics();
             photo.DrawImage(bmp, new Point(0, 0));
@@ -146,10 +153,23 @@ namespace Image_labling_tool
 
         private void saveToFile_Click(object sender, EventArgs e)
         {
-            Postprocess((Bitmap)canvas.Image);
-            string outputpath = photoList.SelectedItem.ToString();
-            string ext = Path.GetExtension(outputpath);
-            canvas.Image.Save(outputpath.Replace( ext, "_label_"+ ext));
+            ProcessImage((Bitmap)canvas.Image,(img, color, i, j)=> 
+            {
+                if (!CheckColor(color))
+                {
+                    img.SetPixel(i, j, Color.Black);
+                }
+            });
+            string fullPath = photoList.SelectedItem.ToString();
+            string outputpath = Path.GetDirectoryName(fullPath);
+            string fileName = Path.GetFileName(fullPath);
+            outputpath += @"\label";
+            if (!Directory.Exists(outputpath)) 
+            {
+                Directory.CreateDirectory(outputpath);
+            }
+            canvas.Image.Save(outputpath+ @"\"+fileName);
+            //clear resources
             original.Dispose();
             lastModified.Dispose();
             canvas.Image.Dispose();
@@ -159,36 +179,18 @@ namespace Image_labling_tool
             this.points.Clear();
         }
 
-        private void Preprocess(Bitmap img) 
+        private void ProcessImage(Bitmap img,Action<Bitmap,Color,int,int> callback) 
         {
             for (int i = 0; i < img.Width; i++) 
             {
                 for (int j = 0; j < img.Height; j++) 
                 {
                     Color c=img.GetPixel(i, j);
-                    if (CheckColor(c)) 
-                    {
-                        img.SetPixel(i, j, Color.Black);
-                    }
+                    callback(img, c, i, j);
                 }
             }
         }
-        private void Postprocess(Bitmap img)
-        {
-
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    Color c = img.GetPixel(i, j);
-                   
-                    if (!CheckColor(c))
-                    {
-                        img.SetPixel(i, j, Color.Black);
-                    }
-                }
-            }
-        }
+       
         private bool CheckColor(Color c) 
         {
             foreach (var e in COLOR) 
