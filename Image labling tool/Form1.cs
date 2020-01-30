@@ -15,7 +15,6 @@ namespace Image_labling_tool
     public partial class Form1 : Form
     {
         Point mouseMove = Point.Empty;
-        Point mouseDown = Point.Empty;
         bool moving = false;
         Pen pen;
         Image original;
@@ -40,7 +39,7 @@ namespace Image_labling_tool
         private void PanelMouseDown(object sender, MouseEventArgs e)
         {
             moving = true;
-            mouseDown = e.Location;
+            mouseMove = e.Location;
         }
 
         private void PanelMouseMove(object sender, MouseEventArgs e)
@@ -52,13 +51,14 @@ namespace Image_labling_tool
                     return;
                 }
                 Image bmp = lastModified;
-                mouseMove = e.Location;
                 using (Graphics photo = Graphics.FromImage(bmp))
                 {
                     photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     Brush aBrush = new SolidBrush(pen.Color);
-                    photo.DrawLine(pen, mouseDown, mouseMove);
+                    photo.DrawLine(pen, mouseMove, e.Location);
                 }
+                mouseMove = e.Location;
+                canvas.Image.Dispose();
                 canvas.Image = new Bitmap(bmp);
 
             }
@@ -77,6 +77,7 @@ namespace Image_labling_tool
                 photo.FillRectangle(aBrush, e.X, e.Y, 3, 3);
                 points.Add(e.Location);
             }
+            canvas.Image.Dispose();
             canvas.Image = bmp;
         }
 
@@ -126,7 +127,7 @@ namespace Image_labling_tool
             Graphics photo = canvas.CreateGraphics();
             photo.DrawImage(bmp, new Point(0, 0));
             canvas.Image = bmp;
-            this.lastModified = bmp;
+            this.lastModified = new Bitmap(bmp);
         }
 
         private void fillButton_Click(object sender, EventArgs e)
@@ -142,6 +143,7 @@ namespace Image_labling_tool
                 Brush aBrush = new SolidBrush(pen.Color);
                 photo.FillPolygon(aBrush, points.ToArray());
             }
+            canvas.Image.Dispose();
             canvas.Image = new Bitmap(bmp);
             this.points.Clear();
         }
