@@ -1,0 +1,9 @@
+F:\visual studio project\Image-labler\Image labling tool\bin\Release\Image labling tool.exe.config
+F:\visual studio project\Image-labler\Image labling tool\bin\Release\Image labling tool.exe
+F:\visual studio project\Image-labler\Image labling tool\bin\Release\Image labling tool.pdb
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image labling tool.csprojAssemblyReference.cache
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image_labling_tool.Form1.resources
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image_labling_tool.Properties.Resources.resources
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image labling tool.csproj.GenerateResource.cache
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image labling tool.exe
+F:\visual studio project\Image-labler\Image labling tool\obj\Release\Image labling tool.pdb
