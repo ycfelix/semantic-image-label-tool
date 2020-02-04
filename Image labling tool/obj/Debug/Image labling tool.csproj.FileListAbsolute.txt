@@ -6,3 +6,4 @@ F:\visual studio project\Image-labler\Image labling tool\obj\Debug\Image_labling
 F:\visual studio project\Image-labler\Image labling tool\obj\Debug\Image labling tool.csproj.GenerateResource.cache
 F:\visual studio project\Image-labler\Image labling tool\obj\Debug\Image labling tool.exe
 F:\visual studio project\Image-labler\Image labling tool\obj\Debug\Image labling tool.pdb
+F:\visual studio project\Image-labler\Image labling tool\obj\Debug\Image labling tool.csprojAssemblyReference.cache

@@ -15,6 +15,7 @@ namespace Image_labling_tool
     public partial class Form1 : Form
     {
         Point mouseMove = Point.Empty;
+        Point mouseDown = Point.Empty;
         bool moving = false;
         Pen pen;
         Image original;
@@ -40,32 +41,61 @@ namespace Image_labling_tool
         {
             moving = true;
             mouseMove = e.Location;
+            mouseDown = e.Location;
         }
 
         private void PanelMouseMove(object sender, MouseEventArgs e)
         {
             if (moving) 
             {
-                if (!lineMode.Checked) 
+                if (drawLine.Checked)
                 {
-                    return;
+                    DrawLines(e);
                 }
-                Image bmp = lastModified;
-                using (Graphics photo = Graphics.FromImage(bmp))
+                else if (drawSquare.Checked) 
                 {
-                    photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    Brush aBrush = new SolidBrush(pen.Color);
-                    photo.DrawLine(pen, mouseMove, e.Location);
+                    DrawSquares(e);
                 }
-                mouseMove = e.Location;
-                canvas.Image.Dispose();
-                canvas.Image = new Bitmap(bmp);
-
+               
             }
         }
+
+        private void DrawSquares(MouseEventArgs e) 
+        {
+            Bitmap bm = new Bitmap(canvas.Image);
+
+            // Draw the rectangle.
+            using (Graphics gr = Graphics.FromImage(bm))
+            {
+                gr.DrawRectangle(this.pen,
+                    Math.Min(mouseMove.X,e.X), Math.Min(mouseMove.Y, e.Y),
+                    Math.Abs(mouseMove.X-e.X), Math.Abs(mouseMove.Y - e.Y));
+            }
+
+            // Display the temporary bitmap.
+            canvas.Image.Dispose();
+            canvas.Image = bm;
+        }
+
+        private void DrawLines(MouseEventArgs e) 
+        {
+            Image bmp = lastModified;
+            using (Graphics photo = Graphics.FromImage(bmp))
+            {
+                photo.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                Brush aBrush = new SolidBrush(pen.Color);
+                photo.DrawLine(pen, mouseMove, e.Location);
+            }
+            mouseMove = e.Location;
+            canvas.Image.Dispose();
+            canvas.Image = new Bitmap(bmp);
+        }
+
+
+
         private void PanelMouseClick(object sender, MouseEventArgs e)
         {
-            if (!dotMode.Checked|| canvas.Image==null)
+            if (!drawDot.Checked|| canvas.Image==null)
             {
                 return;
             }
@@ -85,7 +115,27 @@ namespace Image_labling_tool
         {
             moving = false;
             canvas.Cursor = Cursors.Default;
-            canvas.Invalidate();
+            if (!drawSquare.Checked) 
+            {
+                canvas.Invalidate();
+                return;
+            }
+            // Copy the selected part of the image.
+            int wid = Math.Abs(mouseMove.X - e.X);
+            int hgt = Math.Abs(mouseMove.Y - e.Y);
+            if ((wid < 1) || (hgt < 1)) return;
+
+            Bitmap area = (Bitmap)lastModified;
+            using (Graphics g = Graphics.FromImage(area))
+            {
+                Rectangle dest_rectangle =new Rectangle(mouseDown.X, mouseDown.Y, wid, hgt);
+                Brush aBrush = new SolidBrush(pen.Color);
+                g.FillRectangle(aBrush, dest_rectangle);
+            }
+
+            // Display the result.
+            canvas.Image.Dispose();
+            canvas.Image = new Bitmap(area);
         }
 
         private void LoadDirectory(object sender, EventArgs e)
@@ -205,47 +255,5 @@ namespace Image_labling_tool
             return false;
         
         }
-
-        private void dotMode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (dotMode.Checked)
-            {
-                lineMode.Checked = false;
-            }
-            else 
-            {
-                lineMode.Checked = true;
-            }
-            if (lineMode.Checked)
-            {
-                dotMode.Checked = false;
-            }
-            else
-            {
-                dotMode.Checked = true;
-            }
-
-        }
-
-        private void lineMode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (dotMode.Checked)
-            {
-                lineMode.Checked = false;
-            }
-            else
-            {
-                lineMode.Checked = true;
-            }
-            if (lineMode.Checked)
-            {
-                dotMode.Checked = false;
-            }
-            else
-            {
-                dotMode.Checked = true;
-            }
-        }
-
     }
 }

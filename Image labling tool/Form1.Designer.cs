@@ -35,8 +35,6 @@ namespace Image_labling_tool
             this.canvas = new System.Windows.Forms.PictureBox();
             this.photoList = new System.Windows.Forms.ListBox();
             this.actionBar = new System.Windows.Forms.Panel();
-            this.dotMode = new System.Windows.Forms.CheckBox();
-            this.lineMode = new System.Windows.Forms.CheckBox();
             this.fillButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.undoButton = new System.Windows.Forms.Button();
@@ -45,6 +43,9 @@ namespace Image_labling_tool
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.drawLine = new System.Windows.Forms.RadioButton();
+            this.drawDot = new System.Windows.Forms.RadioButton();
+            this.drawSquare = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.actionBar.SuspendLayout();
@@ -64,7 +65,7 @@ namespace Image_labling_tool
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(697, 466);
+            this.panel1.Size = new System.Drawing.Size(841, 466);
             this.panel1.TabIndex = 0;
             // 
             // canvas
@@ -72,7 +73,7 @@ namespace Image_labling_tool
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvas.Location = new System.Drawing.Point(189, 45);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(508, 421);
+            this.canvas.Size = new System.Drawing.Size(652, 421);
             this.canvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.canvas.TabIndex = 3;
             this.canvas.TabStop = false;
@@ -96,8 +97,9 @@ namespace Image_labling_tool
             // actionBar
             // 
             this.actionBar.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.actionBar.Controls.Add(this.dotMode);
-            this.actionBar.Controls.Add(this.lineMode);
+            this.actionBar.Controls.Add(this.drawSquare);
+            this.actionBar.Controls.Add(this.drawDot);
+            this.actionBar.Controls.Add(this.drawLine);
             this.actionBar.Controls.Add(this.fillButton);
             this.actionBar.Controls.Add(this.button3);
             this.actionBar.Controls.Add(this.undoButton);
@@ -109,39 +111,13 @@ namespace Image_labling_tool
             this.actionBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.actionBar.Location = new System.Drawing.Point(0, 0);
             this.actionBar.Name = "actionBar";
-            this.actionBar.Size = new System.Drawing.Size(697, 45);
+            this.actionBar.Size = new System.Drawing.Size(841, 45);
             this.actionBar.TabIndex = 0;
-            // 
-            // dotMode
-            // 
-            this.dotMode.AutoSize = true;
-            this.dotMode.Checked = true;
-            this.dotMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dotMode.Dock = System.Windows.Forms.DockStyle.Right;
-            this.dotMode.Location = new System.Drawing.Point(211, 0);
-            this.dotMode.Name = "dotMode";
-            this.dotMode.Size = new System.Drawing.Size(89, 45);
-            this.dotMode.TabIndex = 9;
-            this.dotMode.Text = "dot mode";
-            this.dotMode.UseVisualStyleBackColor = true;
-            this.dotMode.CheckedChanged += new System.EventHandler(this.dotMode_CheckedChanged);
-            // 
-            // lineMode
-            // 
-            this.lineMode.AutoSize = true;
-            this.lineMode.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lineMode.Location = new System.Drawing.Point(300, 0);
-            this.lineMode.Name = "lineMode";
-            this.lineMode.Size = new System.Drawing.Size(97, 45);
-            this.lineMode.TabIndex = 8;
-            this.lineMode.Text = "Line mode";
-            this.lineMode.UseVisualStyleBackColor = true;
-            this.lineMode.CheckedChanged += new System.EventHandler(this.lineMode_CheckedChanged);
             // 
             // fillButton
             // 
             this.fillButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.fillButton.Location = new System.Drawing.Point(397, 0);
+            this.fillButton.Location = new System.Drawing.Point(541, 0);
             this.fillButton.Name = "fillButton";
             this.fillButton.Size = new System.Drawing.Size(75, 45);
             this.fillButton.TabIndex = 7;
@@ -152,7 +128,7 @@ namespace Image_labling_tool
             // button3
             // 
             this.button3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button3.Location = new System.Drawing.Point(472, 0);
+            this.button3.Location = new System.Drawing.Point(616, 0);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 45);
             this.button3.TabIndex = 6;
@@ -163,7 +139,7 @@ namespace Image_labling_tool
             // undoButton
             // 
             this.undoButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.undoButton.Location = new System.Drawing.Point(547, 0);
+            this.undoButton.Location = new System.Drawing.Point(691, 0);
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(75, 45);
             this.undoButton.TabIndex = 5;
@@ -174,7 +150,7 @@ namespace Image_labling_tool
             // saveToFile
             // 
             this.saveToFile.Dock = System.Windows.Forms.DockStyle.Right;
-            this.saveToFile.Location = new System.Drawing.Point(622, 0);
+            this.saveToFile.Location = new System.Drawing.Point(766, 0);
             this.saveToFile.Name = "saveToFile";
             this.saveToFile.Size = new System.Drawing.Size(75, 45);
             this.saveToFile.TabIndex = 4;
@@ -222,13 +198,50 @@ namespace Image_labling_tool
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.ColorClick);
             // 
+            // drawLine
+            // 
+            this.drawLine.AutoSize = true;
+            this.drawLine.Dock = System.Windows.Forms.DockStyle.Right;
+            this.drawLine.Location = new System.Drawing.Point(454, 0);
+            this.drawLine.Name = "drawLine";
+            this.drawLine.Size = new System.Drawing.Size(87, 45);
+            this.drawLine.TabIndex = 8;
+            this.drawLine.TabStop = true;
+            this.drawLine.Text = "draw line";
+            this.drawLine.UseVisualStyleBackColor = true;
+            // 
+            // drawDot
+            // 
+            this.drawDot.AutoSize = true;
+            this.drawDot.Checked = true;
+            this.drawDot.Dock = System.Windows.Forms.DockStyle.Right;
+            this.drawDot.Location = new System.Drawing.Point(370, 0);
+            this.drawDot.Name = "drawDot";
+            this.drawDot.Size = new System.Drawing.Size(84, 45);
+            this.drawDot.TabIndex = 9;
+            this.drawDot.TabStop = true;
+            this.drawDot.Text = "draw dot";
+            this.drawDot.UseVisualStyleBackColor = true;
+            // 
+            // drawSquare
+            // 
+            this.drawSquare.AutoSize = true;
+            this.drawSquare.Dock = System.Windows.Forms.DockStyle.Right;
+            this.drawSquare.Location = new System.Drawing.Point(265, 0);
+            this.drawSquare.Name = "drawSquare";
+            this.drawSquare.Size = new System.Drawing.Size(105, 45);
+            this.drawSquare.TabIndex = 10;
+            this.drawSquare.TabStop = true;
+            this.drawSquare.Text = "draw square";
+            this.drawSquare.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(697, 466);
+            this.ClientSize = new System.Drawing.Size(841, 466);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
@@ -261,8 +274,9 @@ namespace Image_labling_tool
         private System.Windows.Forms.Button saveToFile;
         private PictureBox canvas;
         private Button fillButton;
-        private CheckBox dotMode;
-        private CheckBox lineMode;
+        private RadioButton drawSquare;
+        private RadioButton drawDot;
+        private RadioButton drawLine;
     }
 }
 
